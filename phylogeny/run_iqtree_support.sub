@@ -1,0 +1,17 @@
+#!/bin/bash
+#SBATCH --job-name=generax_support
+#SBATCH --account=jwisecav
+#SBATCH --mail-type=END,FAIL
+#SBATCH --nodes=1
+#SBATCH --ntasks=10
+#SBATCH --time=12:00:00     
+#SBATCH --output=%x.o%j
+#SBATCH --error=%x.e%j
+
+# usage: export OG='GENEID'; sbatch --mail-user=$EMAIL ../scripts/run_iqtree_support.sub
+
+module load iqtree
+
+iqtree -sup ${OG}_generax.treefile ${OG}.ufboot
+mv ${OG}.ufboot.suptree ${OG}_generax.contree
+

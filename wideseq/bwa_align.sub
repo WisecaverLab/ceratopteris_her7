@@ -1,0 +1,65 @@
+#!/bin/bash
+#SBATCH --job-name=BWA_alignment
+#SBATCH --account=jwisecav
+#SBATCH --mail-type=END,FAIL
+#SBATCH --mem=90G
+#SBATCH --ntasks=48
+#SBATCH --time=48:00:00     
+#SBATCH --output=%x.o%j
+#SBATCH --error=%x.e%j
+
+
+###'USAGE: sbatch --mail-user=$EMAIL /depot/jwisecav/data/ceratopteris/github/ceratopteris_bsa_by_rnaseq/wideseq/bwa_align.sub'
+
+echo 'module use /depot/jwisecav/apps/modulefiles'
+echo 'module load bwa'
+echo 'module load samtools'
+
+module use /depot/jwisecav/apps/modulefiles
+module load bwa
+module load samtools
+
+echo 'bwa index -a bwtsw Crichardii_676_v2.0.fa'
+bwa index -a bwtsw Crichardii_676_v2.0.fa
+
+echo 'cd her19'
+cd her19
+
+echo 'bwa mem ../Crichardii_676_v2.0.fa ../raw_reads/009590_her19_S9_R1_filtered.fastq.gz ../raw_reads/009590_her19_S9_R2_filtered.fastq.gz | samtools sort -o her19_bwa_aligned.bam'
+bwa mem ../Crichardii_676_v2.0.fa ../raw_reads/009590_her19_S9_R1_filtered.fastq.gz ../raw_reads/009590_her19_S9_R2_filtered.fastq.gz | samtools sort -o her19_bwa_aligned.bam
+
+echo 'cd ../her11'
+cd ../her11
+
+echo 'bwa mem ../Crichardii_676_v2.0.fa ../raw_reads/009219_her11-BRL_S86_R1_filtered.fastq.gz ../raw_reads/009219_her11-BRL_S86_R2_filtered.fastq.gz | samtools sort -o her11_bwa_aligned.bam'
+bwa mem ../Crichardii_676_v2.0.fa ../raw_reads/009219_her11-BRL_S86_R1_filtered.fastq.gz ../raw_reads/009219_her11-BRL_S86_R2_filtered.fastq.gz | samtools sort -o her11_bwa_aligned.bam
+
+echo 'cd ../her15'
+cd ../her15
+
+echo 'bwa mem ../Crichardii_676_v2.0.fa ../raw_reads/009220_her15-BRL_S87_R1_filtered.fastq.gz ../raw_reads/009220_her15-BRL_S87_R2_filtered.fastq.gz | samtools sort -o her15_bwa_aligned.bam'
+bwa mem ../Crichardii_676_v2.0.fa ../raw_reads/009220_her15-BRL_S87_R1_filtered.fastq.gz ../raw_reads/009220_her15-BRL_S87_R2_filtered.fastq.gz | samtools sort -o her15_bwa_aligned.bam
+
+echo 'cd ../her10'
+cd ../her10
+
+echo 'bwa mem ../Crichardii_676_v2.0.fa ../raw_reads/009221_her10-BRL_S88_R1_filtered.fastq.gz ../raw_reads/009221_her10-BRL_S88_R2_filtered.fastq.gz | samtools sort -o her10_bwa_aligned.bam'
+bwa mem ../Crichardii_676_v2.0.fa ../raw_reads/009221_her10-BRL_S88_R1_filtered.fastq.gz ../raw_reads/009221_her10-BRL_S88_R2_filtered.fastq.gz | samtools sort -o her10_bwa_aligned.bam
+
+echo 'cd ../her14'
+cd ../her14
+
+echo 'bwa mem ../Crichardii_676_v2.0.fa ../raw_reads/009589_her14_S8_R1_filtered.fastq.gz ../raw_reads/009589_her14_S8_R2_filtered.fastq.gz | samtools sort -o her14_bwa_aliged.bam'
+bwa mem ../Crichardii_676_v2.0.fa ../raw_reads/009589_her14_S8_R1_filtered.fastq.gz ../raw_reads/009589_her14_S8_R2_filtered.fastq.gz | samtools sort -o her14_bwa_aliged.bam
+
+echo 'cd ../hnn'
+cd ../hnn
+
+echo 'bwa mem ../Crichardii_676_v2.0.fa ../raw_reads/009588_hnn_S7_R1_filtered.fastq.gz ../raw_reads/009588_hnn_S7_R2_filtered.fastq.gz | samtools sort -o hnn_bwa_aligned.bam'
+bwa mem ../Crichardii_676_v2.0.fa ../raw_reads/009588_hnn_S7_R1_filtered.fastq.gz ../raw_reads/009588_hnn_S7_R2_filtered.fastq.gz | samtools sort -o hnn_bwa_aligned.bam
+
+echo 'cd ../her7'
+cd ../her7
+
+echo 'bwa mem ../Crichardii_676_v2.0.fa ../raw_reads/009222_her7-BRL_S89_R1_filtered.fastq.gz ../raw_reads/009222_her7-BRL_S89_R2_filtered.fastq.gz | samtools sort -o her7_bwa_aligned.bam'
+bwa mem ../Crichardii_676_v2.0.fa ../raw_reads/009222_her7-BRL_S89_R1_filtered.fastq.gz ../raw_reads/009222_her7-BRL_S89_R2_filtered.fastq.gz | samtools sort -o her7_bwa_aligned.bam

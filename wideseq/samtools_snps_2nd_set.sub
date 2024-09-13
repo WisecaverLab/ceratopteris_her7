@@ -1,0 +1,48 @@
+#!/bin/bash
+#SBATCH --job-name=bwa_align
+#SBATCH --account=jwisecav
+#SBATCH --mail-type=END,FAIL
+#SBATCH --nodes=1
+#SBATCH --ntasks=1
+#SBATCH --cpus-per-task=16
+#SBATCH --mem=24G
+#SBATCH --time=24:00:00     
+#SBATCH --output=slurm-out/%x.o%j
+#SBATCH --error=slurm-out/%x.e%j
+
+
+echo 'module load samtools'
+echo 'module load bcftools'
+echo 'module load bwa'
+
+module load samtools
+module load bcftools
+module load bwa
+
+
+echo 'bwa mem /depot/jwisecav/data/kburow/BSA_by_RNAseq/candidate_wideseq/ref_files/Crichardii_676_v2.0.fa /depot/jwisecav/data/kburow/BSA_by_RNAseq/candidate_wideseq/009219_her11-BRL_S86_R1_filtered.fastq.gz /depot/jwisecav/data/kburow/BSA_by_RNAseq/candidate_wideseq/009219_her11-BRL_S86_R2_filtered.fastq.gz | samtools sort -o /depot/jwisecav/data/kburow/BSA_by_RNAseq/candidate_wideseq/her11-BRL1_align.bam'
+bwa mem /depot/jwisecav/data/kburow/BSA_by_RNAseq/candidate_wideseq/ref_files/Crichardii_676_v2.0.fa /depot/jwisecav/data/kburow/BSA_by_RNAseq/candidate_wideseq/009219_her11-BRL_S86_R1_filtered.fastq.gz /depot/jwisecav/data/kburow/BSA_by_RNAseq/candidate_wideseq/009219_her11-BRL_S86_R2_filtered.fastq.gz | samtools sort -o /depot/jwisecav/data/kburow/BSA_by_RNAseq/candidate_wideseq/her11-BRL1_align.bam
+
+echo 'bcftools mpileup -Ou -f /depot/jwisecav/data/ceratopteris/bsa_by_rnaseq/01_genome_reference/Crichardii_676_v2.0.fa /depot/jwisecav/data/kburow/BSA_by_RNAseq/candidate_wideseq/her11-BRL1_align.bam | bcftools call --ploidy 1 -mv -Ov -o /depot/jwisecav/data/kburow/BSA_by_RNAseq/candidate_wideseq/her11-BRL1_align_calls.vcf'
+bcftools mpileup -Ou -f /depot/jwisecav/data/ceratopteris/bsa_by_rnaseq/01_genome_reference/Crichardii_676_v2.0.fa /depot/jwisecav/data/kburow/BSA_by_RNAseq/candidate_wideseq/her11-BRL1_align.bam | bcftools call --ploidy 1 -mv -Ov -o /depot/jwisecav/data/kburow/BSA_by_RNAseq/candidate_wideseq/her11-BRL1_align_calls.vcf
+
+
+echo 'bwa mem /depot/jwisecav/data/kburow/BSA_by_RNAseq/candidate_wideseq/ref_files/Crichardii_676_v2.0.fa /depot/jwisecav/data/kburow/BSA_by_RNAseq/candidate_wideseq/009220_her15-BRL_S86_R1_filtered.fastq.gz /depot/jwisecav/data/kburow/BSA_by_RNAseq/candidate_wideseq/009220_her15-BRL_S86_R2_filtered.fastq.gz | samtools sort -o /depot/jwisecav/data/kburow/BSA_by_RNAseq/candidate_wideseq/her15-BRL1_align.bam'
+bwa mem /depot/jwisecav/data/kburow/BSA_by_RNAseq/candidate_wideseq/ref_files/Crichardii_676_v2.0.fa /depot/jwisecav/data/kburow/BSA_by_RNAseq/candidate_wideseq/009220_her15-BRL_S87_R1_filtered.fastq.gz /depot/jwisecav/data/kburow/BSA_by_RNAseq/candidate_wideseq/009220_her15-BRL_S87_R2_filtered.fastq.gz | samtools sort -o /depot/jwisecav/data/kburow/BSA_by_RNAseq/candidate_wideseq/her15-BRL1_align.bam
+
+echo 'bcftools mpileup -Ou -f /depot/jwisecav/data/ceratopteris/bsa_by_rnaseq/01_genome_reference/Crichardii_676_v2.0.fa /depot/jwisecav/data/kburow/BSA_by_RNAseq/candidate_wideseq/her15-BRL1_align.bam | bcftools call --ploidy 1 -mv -Ov -o /depot/jwisecav/data/kburow/BSA_by_RNAseq/candidate_wideseq/her15-BRL1_align_calls.vcf'
+bcftools mpileup -Ou -f /depot/jwisecav/data/ceratopteris/bsa_by_rnaseq/01_genome_reference/Crichardii_676_v2.0.fa /depot/jwisecav/data/kburow/BSA_by_RNAseq/candidate_wideseq/her15-BRL1_align.bam | bcftools call --ploidy 1 -mv -Ov -o /depot/jwisecav/data/kburow/BSA_by_RNAseq/candidate_wideseq/her15-BRL1_align_calls.vcf
+
+
+echo 'bwa mem /depot/jwisecav/data/kburow/BSA_by_RNAseq/candidate_wideseq/ref_files/Crichardii_676_v2.0.fa /depot/jwisecav/data/kburow/BSA_by_RNAseq/candidate_wideseq/009221_her10-BRL_S88_R1_filtered.fastq.gz /depot/jwisecav/data/kburow/BSA_by_RNAseq/candidate_wideseq/009221_her10-BRL_S88_R2_filtered.fastq.gz | samtools sort -o /depot/jwisecav/data/kburow/BSA_by_RNAseq/candidate_wideseq/her10-BRL1_align.bam'
+bwa mem /depot/jwisecav/data/kburow/BSA_by_RNAseq/candidate_wideseq/ref_files/Crichardii_676_v2.0.fa /depot/jwisecav/data/kburow/BSA_by_RNAseq/candidate_wideseq/009221_her10-BRL_S88_R1_filtered.fastq.gz /depot/jwisecav/data/kburow/BSA_by_RNAseq/candidate_wideseq/009221_her10-BRL_S88_R2_filtered.fastq.gz | samtools sort -o /depot/jwisecav/data/kburow/BSA_by_RNAseq/candidate_wideseq/her10-BRL1_align.bam
+
+echo 'bcftools mpileup -Ou -f /depot/jwisecav/data/ceratopteris/bsa_by_rnaseq/01_genome_reference/Crichardii_676_v2.0.fa /depot/jwisecav/data/kburow/BSA_by_RNAseq/candidate_wideseq/her10-BRL1_align.bam | bcftools call --ploidy 1 -mv -Ov -o /depot/jwisecav/data/kburow/BSA_by_RNAseq/candidate_wideseq/her10-BRL1_align_calls.vcf'
+bcftools mpileup -Ou -f /depot/jwisecav/data/ceratopteris/bsa_by_rnaseq/01_genome_reference/Crichardii_676_v2.0.fa /depot/jwisecav/data/kburow/BSA_by_RNAseq/candidate_wideseq/her10-BRL1_align.bam | bcftools call --ploidy 1 -mv -Ov -o /depot/jwisecav/data/kburow/BSA_by_RNAseq/candidate_wideseq/her10-BRL1_align_calls.vcf
+
+
+echo 'bwa mem /depot/jwisecav/data/kburow/BSA_by_RNAseq/candidate_wideseq/ref_files/Crichardii_676_v2.0.fa /depot/jwisecav/data/kburow/BSA_by_RNAseq/candidate_wideseq/009222_her7-BRL_S89_R1_filtered.fastq.gz /depot/jwisecav/data/kburow/BSA_by_RNAseq/candidate_wideseq/009222_her7-BRL_S89_R2_filtered.fastq.gz | samtools sort -o /depot/jwisecav/data/kburow/BSA_by_RNAseq/candidate_wideseq/her7-BRL_2nd_align.bam'
+bwa mem /depot/jwisecav/data/kburow/BSA_by_RNAseq/candidate_wideseq/ref_files/Crichardii_676_v2.0.fa /depot/jwisecav/data/kburow/BSA_by_RNAseq/candidate_wideseq/009222_her7-BRL_S89_R1_filtered.fastq.gz /depot/jwisecav/data/kburow/BSA_by_RNAseq/candidate_wideseq/009222_her7-BRL_S89_R2_filtered.fastq.gz | samtools sort -o /depot/jwisecav/data/kburow/BSA_by_RNAseq/candidate_wideseq/her7-BRL_2nd_align.bam
+
+echo 'bcftools mpileup -Ou -f /depot/jwisecav/data/ceratopteris/bsa_by_rnaseq/01_genome_reference/Crichardii_676_v2.0.fa /depot/jwisecav/data/kburow/BSA_by_RNAseq/candidate_wideseq/her7-BRL_2nd_align.bam | bcftools call --ploidy 1 -mv -Ov -o /depot/jwisecav/data/kburow/BSA_by_RNAseq/candidate_wideseq/her7-BRL1_2nd_align_calls.vcf'
+bcftools mpileup -Ou -f /depot/jwisecav/data/ceratopteris/bsa_by_rnaseq/01_genome_reference/Crichardii_676_v2.0.fa /depot/jwisecav/data/kburow/BSA_by_RNAseq/candidate_wideseq/her7-BRL_2nd_align.bam | bcftools call --ploidy 1 -mv -Ov -o /depot/jwisecav/data/kburow/BSA_by_RNAseq/candidate_wideseq/her7-BRL1_2nd_align_calls.vcf

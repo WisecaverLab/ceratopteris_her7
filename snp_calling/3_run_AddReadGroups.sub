@@ -1,0 +1,37 @@
+#!/bin/bash
+#SBATCH --job-name=GATK_AddReadGroups
+#SBATCH --account=jwisecav
+#SBATCH --mail-type=END,FAIL
+#SBATCH --nodes=1
+#SBATCH --ntasks=1
+#SBATCH --cpus-per-task=4
+#SBATCH --mem=8G
+#SBATCH --time=16:00:00     
+#SBATCH --output=slurm_out/%x.o%j
+#SBATCH --error=slurm_out/%x.e%j
+
+##USAGE: export SAMPLE=''; export INDIR=''; export OUTDIR=''; sbatch --mail-user=$EMAIL /depot/jwisecav/data/ceratopteris/github/ceratopteris_bsa_by_rnaseq/snp_calling/3_run_AddReadGroups.sub
+
+
+###SAMPLE should be the sample name matching the name of the SplitNCigars sample of interest
+###INDIR should be the path to the full directory containing the bam file 
+###OUTDIR should be full path to the output directory
+
+echo $SAMPLE
+echo $INDIR
+echo $OUTDIR
+
+echo 'cd $OUTDIR'
+cd $OUTDIR
+
+echo 'module load biocontainers/default'
+echo 'module load gatk4/4.2.6.1'
+
+#load modules
+module load biocontainers/default
+module load gatk4/4.2.6.1
+
+echo 'gatk AddOrReplaceReadGroups -I '$INDIR${SAMPLE}_splitNcigar.bam' -O ${SAMPLE}_ReadGroups.bam -LB '${SAMPLE}' -PL 'illumina' -PU 'barcode' -SM '{$SAMPLE}''
+
+#Add read groups to the data
+gatk AddOrReplaceReadGroups -I '$INDIR${SAMPLE}_splitNcigar.bam' -O ${SAMPLE}_ReadGroups.bam -LB '${SAMPLE}' -PL 'illumina' -PU 'barcode' -SM '{$SAMPLE}'

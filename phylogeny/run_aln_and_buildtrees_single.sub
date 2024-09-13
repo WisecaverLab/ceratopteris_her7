@@ -1,0 +1,82 @@
+#!/bin/bash
+#SBATCH --job-name=buildtrees
+#SBATCH --account=jwisecav
+#SBATCH --mail-type=END,FAIL
+#SBATCH --nodes=1
+#SBATCH --ntasks=32
+#SBATCH --time=48:00:00     
+#SBATCH --output=%x.o%j
+#SBATCH --error=%x.e%j
+
+# usage: export OG='HER7'; sbatch --mail-user=$EMAIL ../scripts/run_aln_and_buildtrees_single.sub
+
+CWD=$PWD
+
+#OG='HER7'
+
+module load conda-env/env.genomics
+module load mafft
+module load trimal
+module load iqtree
+module load notung
+
+date
+echo Building $OG phylogeny 
+echo 
+
+#####################################
+### STEP ONE
+### Run mafft protein Alignment
+echo mafft --maxiterate 1000 --genafpair $OG.fa '>' $OG.aln 
+mafft --maxiterate 1000 --genafpair $OG.fa > $OG.aln
+
+echo trimal -gappyout -in $OG.aln -out $OG.trim.aln 
+trimal -gappyout -in $OG.aln -out $OG.trim.aln
+
+#####################################
+### STEP TWO
+### Run FASTTREE phylogenetic analysis 
+echo FastTree -spr 4 -mlacc 2 -slownni $OG.aln '>' $OG.fast.tree 
+FastTree -spr 4 -mlacc 2 -slownni $OG.aln > $OG.fast.tree
+
+echo python ../scripts/mpr_tree.py $OG.fast.tree 
+python ../scripts/mpr_tree.py $OG.fast.tree
+python ../scripts/visualize_tree.py $OG.fast.mpr.tree $OG.aln ../scripts/species_ids.txt ../scripts/lineage_colors.dmp 0.95 $OG.fast.mpr.pdf
+
+#####################################
+### STEP THREE
+### run iqtree on original alignment
+
+### Check Trimmed Alignment Length
+PRENUM=`grep ">" $OG.aln | wc -l`
+NEWNUM=`grep ">" $OG.trim.aln | wc -l`
+PRELEN=`python ../scripts/aln_len.py $OG.aln`
+NEWLEN=`python ../scripts/aln_len.py $OG.trim.aln`
+
+echo -e "\nFLAG: $GENE alignment length pre trimming = $PRELEN" 
+echo -e "FLAG: $GENE alignment length post trimming = $NEWLEN" 
+echo -e "FLAG: $GENE seq count pre trimming = $PRENUM" 
+echo -e "FLAG: $GENE seq count post trimming = $NEWNUM\n" 
+
+
+### Run IGTREE phylogenetic analysis
+# https://groups.google.com/g/iqtree/c/L6uD9vRalhA/m/c4SuobyKEAAJ
+echo iqtree -nt AUTO -s $OG.aln -alrt 10000 -bb 10000 -wbt -pre $OG 
+iqtree -nt AUTO -s $OG.aln -alrt 10000 -bb 10000 -wbt -pre $OG
+
+### Midpoint root tree
+echo python ../scripts/mpr_tree.py $OG.contree 
+python ../scripts/mpr_tree.py $OG.contree
+
+## Root using NOTUNG 
+SPECIESTREE="../scripts/SpeciesTree_model.tree"
+
+echo java -jar /depot/jwisecav/apps/bell/notung/Notung-2.9.1.5.jar --root --treeoutput newick --nolosses -g $OG.mpr.tree -s $SPECIESTREE --infertransfers false --speciestag postfix --usegenedir 
+java -jar /depot/jwisecav/apps/bell/notung/Notung-2.9.1.5.jar --root --treeoutput newick --nolosses -g $OG.mpr.tree -s $SPECIESTREE --infertransfers false --speciestag postfix --usegenedir
+
+mv $OG.mpr.tree.rooting.0 $OG.ntr.tree
+
+python ../scripts/visualize_tree.py $OG.mpr.tree $OG.aln ../scripts/species_ids.txt ../scripts/lineage_colors.dmp 95 $OG.mpr.pdf
+python ../scripts/visualize_tree.py $OG.contree.tree $OG.aln ../scripts/species_ids.txt ../scripts/lineage_colors.dmp 95 $OG.contree.pdf
+python ../scripts/visualize_tree.py $OG.ntr.tree $OG.aln ../scripts/species_ids.txt ../scripts/lineage_colors.dmp 95 $OG.ntr.pdf
+

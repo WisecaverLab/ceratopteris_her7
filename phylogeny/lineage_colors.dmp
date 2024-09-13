@@ -1,0 +1,7 @@
+#order	color	hex	type	lineage	taxids
+1	green	#228833	plant	Homosporous_Fern	fern
+2	yellow	#CCBB44	plant	Heterosporous_Fern	fern
+3	pink	#EE6677	plant	Gymnosperm	gymno
+4	purple	#AA3377	plant	Angiosperm	angio
+5	cyan	#66CCEE	plant	Lycophyte	lyco
+6	blue	#4477AA	plant	Bryophyte	bryo

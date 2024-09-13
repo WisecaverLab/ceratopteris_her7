@@ -1,0 +1,31 @@
+#!/bin/bash
+#SBATCH --job-name=STAR_no_map_index
+#SBATCH --account=jwisecav
+#SBATCH --mail-type=END,FAIL
+#SBATCH --nodes=1
+#SBATCH --ntasks=1
+#SBATCH --cpus-per-task=32
+#SBATCH --mem=90G
+#SBATCH --time=48:00:00     
+#SBATCH --output=slurm-out/%x.o%j
+#SBATCH --error=slurm-out/%x.e%j
+
+# USAGE: export OUTDIR='/depot/jwisecav/data/ceratopteris/bsa_by_rnaseq/03_rnaseq_analysis/06_no_gene_map_STAR/'; export GENOMEFASTA='/depot/jwisecav/data/ceratopteris/bsa_by_rnaseq/01_genome_reference/Crichardii_676_v2.0.fa'; sbatch --mail-user=$EMAIL ../../github/ceratopteris_bsa_by_rnaseq/rnaseq_analysis/6_run_no_gene_map_STAR.sub 
+
+###OUTDIR should be the absolute or relative path to out directory
+###GENOMEFASTA should be the absolute or relative path to the full genome faster files
+###ANNOTFILE should be the absolute or relative path to the gff annotation file or gtf annotation file
+###Remove --sjdbGTFtagExonParentTranscript command if gtf file given to ANNOTFILE variable. 
+
+module use /depot/jwisecav/apps/modulefiles 
+module load star    
+
+echo 'module use /depot/jwisecav/apps/modulefiles'
+echo 'module load star'
+echo 'OUTDIR =' $OUTDIR
+echo 'GENOMEFASTA =' $GENOMEFASTA
+
+echo 'STAR --runMode genomeGenerate --sjdbGTFtagExonParentTranscript Parent --genomeDir $OUTDIR --genomeFastaFiles $GENOMEFASTA'
+
+STAR --runMode genomeGenerate --sjdbGTFtagExonParentTranscript Parent --genomeDir $OUTDIR --genomeFastaFiles $GENOMEFASTA  
+

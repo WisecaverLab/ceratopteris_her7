@@ -1,0 +1,56 @@
+#!/bin/bash
+#SBATCH --job-name=STARmapping
+#SBATCH --account=jwisecav
+#SBATCH --mail-type=END,FAIL
+#SBATCH --mem=90G
+#SBATCH --ntasks=48
+#SBATCH --time=24:00:00     
+#SBATCH --output=%x.o%j
+#SBATCH --error=%x.e%j
+
+echo 'module use /depot/jwisecav/apps/modulefiles'
+echo 'module load star'
+module use /depot/jwisecav/apps/modulefiles
+module load star
+
+echo 'cd her19'
+cd her19
+
+echo 'STAR --runThreadN 24 --genomeDir /depot/jwisecav/data/ceratopteris/bsa_by_rnaseq/03_rnaseq_analysis/04_transcript_mapping/STAR_index --readFilesIn ../009590_her19_S9_R1_filtered.fastq.gz ../009590_her19_S9_R2_filtered.fastq.gz --readFilesCommand gunzip -c --outSAMtype BAM SortedByCoordinate'
+STAR --runThreadN 24 --genomeDir /depot/jwisecav/data/ceratopteris/bsa_by_rnaseq/03_rnaseq_analysis/04_transcript_mapping/STAR_index --readFilesIn ../009590_her19_S9_R1_filtered.fastq.gz ../009590_her19_S9_R2_filtered.fastq.gz --readFilesCommand gunzip -c --outSAMtype BAM SortedByCoordinate
+
+echo 'cd ../her11'
+cd ../her11
+
+echo 'STAR --runThreadN 24 --genomeDir /depot/jwisecav/data/ceratopteris/bsa_by_rnaseq/03_rnaseq_analysis/04_transcript_mapping/STAR_index --readFilesIn ../009219_her11-BRL_S86_R1_filtered.fastq.gz ../009219_her11-BRL_S86_R2_filtered.fastq.gz --readFilesCommand gunzip -c --outSAMtype BAM SortedByCoordinate'
+STAR --runThreadN 24 --genomeDir /depot/jwisecav/data/ceratopteris/bsa_by_rnaseq/03_rnaseq_analysis/04_transcript_mapping/STAR_index --readFilesIn ../009219_her11-BRL_S86_R1_filtered.fastq.gz ../009219_her11-BRL_S86_R2_filtered.fastq.gz --readFilesCommand gunzip -c --outSAMtype BAM SortedByCoordinate
+
+echo 'cd ../her15'
+cd ../her15
+
+echo 'STAR --runThreadN 24 --genomeDir /depot/jwisecav/data/ceratopteris/bsa_by_rnaseq/03_rnaseq_analysis/04_transcript_mapping/STAR_index --readFilesIn ../009220_her15-BRL_S87_R1_filtered.fastq.gz ../009220_her15-BRL_S87_R2_filtered.fastq.gz --readFilesCommand gunzip -c --outSAMtype BAM SortedByCoordinate'
+STAR --runThreadN 24 --genomeDir /depot/jwisecav/data/ceratopteris/bsa_by_rnaseq/03_rnaseq_analysis/04_transcript_mapping/STAR_index --readFilesIn ../009220_her15-BRL_S87_R1_filtered.fastq.gz ../009220_her15-BRL_S87_R2_filtered.fastq.gz --readFilesCommand gunzip -c --outSAMtype BAM SortedByCoordinate
+
+echo 'cd ../her10'
+cd ../her10
+
+echo 'STAR --runThreadN 24 --genomeDir /depot/jwisecav/data/ceratopteris/bsa_by_rnaseq/03_rnaseq_analysis/04_transcript_mapping/STAR_index --readFilesIn ../009221_her10-BRL_S88_R1_filtered.fastq.gz ../009221_her10-BRL_S88_R2_filtered.fastq.gz --readFilesCommand gunzip -c --outSAMtype BAM SortedByCoordinate'
+STAR --runThreadN 24 --genomeDir /depot/jwisecav/data/ceratopteris/bsa_by_rnaseq/03_rnaseq_analysis/04_transcript_mapping/STAR_index --readFilesIn ../009221_her10-BRL_S88_R1_filtered.fastq.gz ../009221_her10-BRL_S88_R2_filtered.fastq.gz --readFilesCommand gunzip -c --outSAMtype BAM SortedByCoordinate
+
+echo 'cd ../her14'
+cd ../her14
+
+echo 'STAR --runThreadN 24 --genomeDir /depot/jwisecav/data/ceratopteris/bsa_by_rnaseq/03_rnaseq_analysis/04_transcript_mapping/STAR_index --readFilesIn ../009589_her14_S8_R1_filtered.fastq.gz ../009589_her14_S8_R2_filtered.fastq.gz  --readFilesCommand gunzip -c --outSAMtype BAM SortedByCoordinate'
+STAR --runThreadN 24 --genomeDir /depot/jwisecav/data/ceratopteris/bsa_by_rnaseq/03_rnaseq_analysis/04_transcript_mapping/STAR_index --readFilesIn ../009589_her14_S8_R1_filtered.fastq.gz ../009589_her14_S8_R2_filtered.fastq.gz  --readFilesCommand gunzip -c --outSAMtype BAM SortedByCoordinate
+
+echo 'cd ../hnn'
+cd ../hnn
+
+echo 'STAR --runThreadN 24 --genomeDir /depot/jwisecav/data/ceratopteris/bsa_by_rnaseq/03_rnaseq_analysis/04_transcript_mapping/STAR_index --readFilesIn ../009588_hnn_S7_R1_filtered.fastq.gz ../009588_hnn_S7_R2_filtered.fastq.gz  --readFilesCommand gunzip -c --outSAMtype BAM SortedByCoordinate'
+STAR --runThreadN 24 --genomeDir /depot/jwisecav/data/ceratopteris/bsa_by_rnaseq/03_rnaseq_analysis/04_transcript_mapping/STAR_index --readFilesIn ../009588_hnn_S7_R1_filtered.fastq.gz ../009588_hnn_S7_R2_filtered.fastq.gz  --readFilesCommand gunzip -c --outSAMtype BAM SortedByCoordinate
+
+echo 'cd ../her7'
+cd ../her7
+
+echo 'STAR --runThreadN 24 --genomeDir /depot/jwisecav/data/ceratopteris/bsa_by_rnaseq/03_rnaseq_analysis/04_transcript_mapping/STAR_index --readFilesIn ../009222_her7-BRL_S89_R1_filtered.fastq.gz ../009222_her7-BRL_S89_R2_filtered.fastq.gz  --readFilesCommand gunzip -c --outSAMtype BAM SortedByCoordinate'
+STAR --runThreadN 24 --genomeDir /depot/jwisecav/data/ceratopteris/bsa_by_rnaseq/03_rnaseq_analysis/04_transcript_mapping/STAR_index --readFilesIn ../009222_her7-BRL_S89_R1_filtered.fastq.gz ../009222_her7-BRL_S89_R2_filtered.fastq.gz  --readFilesCommand gunzip -c --outSAMtype BAM SortedByCoordinate

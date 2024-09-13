@@ -1,0 +1,22 @@
+#!/bin/bash
+#SBATCH --job-name=buildconstrainedtree
+#SBATCH --account=jwisecav
+#SBATCH --mail-type=END,FAIL
+#SBATCH --nodes=1
+#SBATCH --ntasks=1
+#SBATCH --time=12:00:00     
+#SBATCH --output=%x.o%j
+#SBATCH --error=%x.e%j
+
+# usage: sbatch --mail-user=$EMAIL scripts/run_constrained_tree.sub
+
+module load iqtree
+
+#iqtree -s HER7.aln -m JTT+R6 -g HER7.constr_fern -pre HER7.constr_fern
+
+#cat HER7.treefile HER7_generax.treefile HER7.constr_fern.treefile > HER7.treels
+
+iqtree -s HER7.aln -m JTT+R6 -z HER7.treels -n 0 -zb 10000 -au -pre HER7.toptest
+
+
+

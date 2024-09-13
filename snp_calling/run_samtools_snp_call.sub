@@ -1,0 +1,48 @@
+#!/bin/bash
+#SBATCH --job-name=samtools_snp_call
+#SBATCH --account=jwisecav
+#SBATCH --mail-type=END,FAIL
+#SBATCH --nodes=1
+#SBATCH --ntasks=1
+#SBATCH --cpus-per-task=16
+#SBATCH --mem=32G
+#SBATCH --time=24:00:00     
+#SBATCH --output=../../slurm_out/%x.o%j
+#SBATCH --error=../../slurm_out/%x.e%j
+
+##USAGE: export INDIR=''; export SAMPLE=''; export REF=''; sbatch --mail-user=$EMAIL /depot/jwisecav/data/ceratopteris/github/ceratopteris_bsa_by_rnaseq/snp_calling/run_samtools_snp_call.sub
+
+###INDIR should be the path to the input directory
+###SAMPLE should be the sample name 
+###REF should be the path to the reference genome
+
+echo 'module load samtools'
+echo 'module load bcftools'
+
+module load samtools
+module load bcftools
+
+
+#Sort bam files by name: 
+echo 'samtools sort -n -o ${SAMPLE}_namesort_samtools.bam $INDIR${SAMPLE}/Aligned.sortedByCoord.out.bam'
+samtools sort -n -o ${SAMPLE}_namesort_samtools.bam $INDIR${SAMPLE}/Aligned.sortedByCoord.out.bam
+
+#Add ms and MC tags for markdup
+echo 'samtools fixmate -m -O bam ${SAMPLE}_namesort_samtools.bam ${SAMPLE}_fixmate_samtools.bam'
+samtools fixmate -m -O bam ${SAMPLE}_namesort_samtools.bam ${SAMPLE}_fixmate_samtools.bam
+
+#Sort bam files by position:
+echo 'samtools sort -o ${SAMPLE}_positionsort_samtools.bam ${SAMPLE}_fixmate_samtools.bam'
+samtools sort -o ${SAMPLE}_positionsort_samtools.bam ${SAMPLE}_fixmate_samtools.bam
+
+#Remove PCR duplicates 
+echo 'samtools markdup -r ${SAMPLE}_positionsort_samtools.bam ${SAMPLE}_markdup_samtools.bam'
+samtools markdup -r ${SAMPLE}_positionsort_samtools.bam ${SAMPLE}_markdup_samtools.bam
+
+#Call Variants 
+echo 'bcftools mpileup -f $REF ${SAMPLE}_markdup_samtools.bam | bcftools call -mv -Ob -o ${SAMPLE}_raw.bcf'
+bcftools mpileup -f $REF ${SAMPLE}_markdup_samtools.bam | bcftools call -mv -Ob -o ${SAMPLE}_raw.bcf
+
+#convert bcf file to vcf file
+echo 'bcftools convert -O v -o ${SAMPLE}_raw.vcf ${SAMPLE}_raw.bcf'
+bcftools convert -O v -o ${SAMPLE}_raw.vcf ${SAMPLE}_raw.bcf

@@ -1,0 +1,19 @@
+#!/bin/bash
+#SBATCH --job-name=generax
+#SBATCH --account=jwisecav
+#SBATCH --mail-type=END,FAIL
+#SBATCH --nodes=1
+#SBATCH --ntasks=1
+#SBATCH --time=48:00:00     
+#SBATCH --output=%x.o%j
+#SBATCH --error=%x.e%j
+
+# usage: export OG='GENEID'; sbatch --mail-user=$EMAIL ../scripts/run_generax.sub
+
+# nw_labels -I ${OG}.treefile > ${OG}_generax.mapping
+
+module load conda-env/generax-py3.7.6
+
+generax -s ../scripts/SpeciesTree_model.tree -r UndatedDL -p ${OG}_generax -f ${OG}_generax.config
+
+# parse_generax.ipynb

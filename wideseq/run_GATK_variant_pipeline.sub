@@ -1,0 +1,132 @@
+#!/bin/bash
+#SBATCH --job-name=GATK_HaplotypeCaller
+#SBATCH --account=jwisecav
+#SBATCH --mail-type=END,FAIL
+#SBATCH --nodes=1
+#SBATCH --ntasks=1
+#SBATCH --cpus-per-task=16
+#SBATCH --mem=32G
+#SBATCH --time=24:00:00     
+#SBATCH --output=%x.o%j
+#SBATCH --error=%x.e%j
+
+
+echo 'module load biocontainers/default'
+echo 'module load gatk4/4.2.6.1'
+
+#load modules
+module load biocontainers/default
+module load gatk4/4.2.6.1
+
+echo 'cd her19'
+cd her19
+
+echo 'gatk AddOrReplaceReadGroups -I 'Aligned.sortedByCoord.out.bam' -O her19-BRL1_ReadGroups.bam -LB 'her19-BRL1' -PL 'Wideseq' -PU 'barcode' -SM 'her19-BRL1''
+
+#Add read groups to the data
+gatk AddOrReplaceReadGroups -I 'Aligned.sortedByCoord.out.bam' -O her19-BRL1_ReadGroups.bam -LB 'her19-BRL1' -PL 'Wideseq' -PU 'barcode' -SM 'her19-BRL1'
+
+#load samtools module
+module load samtools 
+samtools index her19-BRL1_ReadGroups.bam
+
+echo 'gatk HaplotypeCaller -I 'her19-BRL1_ReadGroups.bam' -O her19-BRL1_HaplotypeCaller.g.vcf.gz -ploidy 1 -R '/depot/jwisecav/data/ceratopteris/bsa_by_rnaseq/01_genome_reference/Crichardii_676_v2.0.fa''
+
+#call variants in the data 
+gatk HaplotypeCaller -I 'her19-BRL1_ReadGroups.bam' -O her19-BRL1_HaplotypeCaller.g.vcf.gz -ploidy 1 -R '/depot/jwisecav/data/ceratopteris/bsa_by_rnaseq/01_genome_reference/Crichardii_676_v2.0.fa' 
+
+echo 'cd ../her11'
+cd ../her11
+
+echo 'gatk AddOrReplaceReadGroups -I 'Aligned.sortedByCoord.out.bam' -O her11-BRL1_ReadGroups.bam -LB 'her11-BRL1' -PL 'Wideseq' -PU 'barcode' -SM 'her11-BRL1''
+
+#Add read groups to the data
+gatk AddOrReplaceReadGroups -I 'Aligned.sortedByCoord.out.bam' -O her11-BRL1_ReadGroups.bam -LB 'her11-BRL1' -PL 'Wideseq' -PU 'barcode' -SM 'her11-BRL1'
+
+#load samtools module
+samtools index her11-BRL1_ReadGroups.bam
+
+echo 'gatk HaplotypeCaller -I 'her11-BRL1_ReadGroups.bam' -O her11-BRL1_HaplotypeCaller.g.vcf.gz -ploidy 1 -R '/depot/jwisecav/data/ceratopteris/bsa_by_rnaseq/01_genome_reference/Crichardii_676_v2.0.fa''
+
+#call variants in the data 
+gatk HaplotypeCaller -I 'her11-BRL1_ReadGroups.bam' -O her11-BRL1_HaplotypeCaller.g.vcf.gz -ploidy 1 -R '/depot/jwisecav/data/ceratopteris/bsa_by_rnaseq/01_genome_reference/Crichardii_676_v2.0.fa' 
+
+echo 'cd ../her10'
+cd ../her10
+
+echo 'gatk AddOrReplaceReadGroups -I 'Aligned.sortedByCoord.out.bam' -O her10-BRL1_ReadGroups.bam -LB 'her10-BRL1' -PL 'Wideseq' -PU 'barcode' -SM 'her10-BRL1''
+
+#Add read groups to the data
+gatk AddOrReplaceReadGroups -I 'Aligned.sortedByCoord.out.bam' -O her10-BRL1_ReadGroups.bam -LB 'her10-BRL1' -PL 'Wideseq' -PU 'barcode' -SM 'her10-BRL1'
+
+#load samtools module
+samtools index her10-BRL1_ReadGroups.bam
+
+echo 'gatk HaplotypeCaller -I 'her10-BRL1_ReadGroups.bam' -O her10-BRL1_HaplotypeCaller.g.vcf.gz -ploidy 1 -R '/depot/jwisecav/data/ceratopteris/bsa_by_rnaseq/01_genome_reference/Crichardii_676_v2.0.fa''
+
+#call variants in the data 
+gatk HaplotypeCaller -I 'her10-BRL1_ReadGroups.bam' -O her10-BRL1_HaplotypeCaller.g.vcf.gz -ploidy 1 -R '/depot/jwisecav/data/ceratopteris/bsa_by_rnaseq/01_genome_reference/Crichardii_676_v2.0.fa' 
+
+echo 'cd ../her14'
+cd ../her14
+
+echo 'gatk AddOrReplaceReadGroups -I 'Aligned.sortedByCoord.out.bam' -O her14-BRL1_ReadGroups.bam -LB 'her14-BRL1' -PL 'Wideseq' -PU 'barcode' -SM 'her14-BRL1''
+
+#Add read groups to the data
+gatk AddOrReplaceReadGroups -I 'Aligned.sortedByCoord.out.bam' -O her14-BRL1_ReadGroups.bam -LB 'her14-BRL1' -PL 'Wideseq' -PU 'barcode' -SM 'her14-BRL1'
+
+#load samtools module
+samtools index her14-BRL1_ReadGroups.bam
+
+echo 'gatk HaplotypeCaller -I 'her14-BRL1_ReadGroups.bam' -O her14-BRL1_HaplotypeCaller.g.vcf.gz -ploidy 1 -R '/depot/jwisecav/data/ceratopteris/bsa_by_rnaseq/01_genome_reference/Crichardii_676_v2.0.fa''
+
+#call variants in the data 
+gatk HaplotypeCaller -I 'her14-BRL1_ReadGroups.bam' -O her14-BRL1_HaplotypeCaller.g.vcf.gz -ploidy 1 -R '/depot/jwisecav/data/ceratopteris/bsa_by_rnaseq/01_genome_reference/Crichardii_676_v2.0.fa' 
+
+echo 'cd ../hnn'
+cd ../hnn
+
+echo 'gatk AddOrReplaceReadGroups -I 'Aligned.sortedByCoord.out.bam' -O hnn-BRL1_ReadGroups.bam -LB 'hnn-BRL1' -PL 'Wideseq' -PU 'barcode' -SM 'hnn-BRL1''
+
+#Add read groups to the data
+gatk AddOrReplaceReadGroups -I 'Aligned.sortedByCoord.out.bam' -O hnn-BRL1_ReadGroups.bam -LB 'hnn-BRL1' -PL 'Wideseq' -PU 'barcode' -SM 'hnn-BRL1'
+
+#load samtools module
+samtools index hnn-BRL1_ReadGroups.bam
+
+echo 'gatk HaplotypeCaller -I 'hnn-BRL1_ReadGroups.bam' -O hnn-BRL1_HaplotypeCaller.g.vcf.gz -ploidy 1 -R '/depot/jwisecav/data/ceratopteris/bsa_by_rnaseq/01_genome_reference/Crichardii_676_v2.0.fa''
+
+#call variants in the data 
+gatk HaplotypeCaller -I 'hnn-BRL1_ReadGroups.bam' -O hnn-BRL1_HaplotypeCaller.g.vcf.gz -ploidy 1 -R '/depot/jwisecav/data/ceratopteris/bsa_by_rnaseq/01_genome_reference/Crichardii_676_v2.0.fa' 
+
+echo 'cd ../her15'
+cd ../her15
+
+echo 'gatk AddOrReplaceReadGroups -I 'Aligned.sortedByCoord.out.bam' -O her15-BRL1_ReadGroups.bam -LB 'her15-BRL1' -PL 'Wideseq' -PU 'barcode' -SM 'her15-BRL1''
+
+#Add read groups to the data
+gatk AddOrReplaceReadGroups -I 'Aligned.sortedByCoord.out.bam' -O her15-BRL1_ReadGroups.bam -LB 'her15-BRL1' -PL 'Wideseq' -PU 'barcode' -SM 'her15-BRL1'
+
+#load samtools module
+samtools index her15-BRL1_ReadGroups.bam
+
+echo 'gatk HaplotypeCaller -I 'her15-BRL1_ReadGroups.bam' -O her15-BRL1_HaplotypeCaller.g.vcf.gz -ploidy 1 -R '/depot/jwisecav/data/ceratopteris/bsa_by_rnaseq/01_genome_reference/Crichardii_676_v2.0.fa''
+
+#call variants in the data 
+gatk HaplotypeCaller -I 'her15-BRL1_ReadGroups.bam' -O her15-BRL1_HaplotypeCaller.g.vcf.gz -ploidy 1 -R '/depot/jwisecav/data/ceratopteris/bsa_by_rnaseq/01_genome_reference/Crichardii_676_v2.0.fa' 
+
+echo 'cd ../her7'
+cd ../her7
+
+echo 'gatk AddOrReplaceReadGroups -I 'Aligned.sortedByCoord.out.bam' -O her7-BRL1_ReadGroups.bam -LB 'her7-BRL1' -PL 'Wideseq' -PU 'barcode' -SM 'her7-BRL1''
+
+#Add read groups to the data
+gatk AddOrReplaceReadGroups -I 'Aligned.sortedByCoord.out.bam' -O her7-BRL1_ReadGroups.bam -LB 'her7-BRL1' -PL 'Wideseq' -PU 'barcode' -SM 'her7-BRL1'
+
+#load samtools module
+samtools index her7-BRL1_ReadGroups.bam
+
+echo 'gatk HaplotypeCaller -I 'her7-BRL1_ReadGroups.bam' -O her7-BRL1_HaplotypeCaller.g.vcf.gz -ploidy 1 -R '/depot/jwisecav/data/ceratopteris/bsa_by_rnaseq/01_genome_reference/Crichardii_676_v2.0.fa''
+
+#call variants in the data 
+gatk HaplotypeCaller -I 'her7-BRL1_ReadGroups.bam' -O her7-BRL1_HaplotypeCaller.g.vcf.gz -ploidy 1 -R '/depot/jwisecav/data/ceratopteris/bsa_by_rnaseq/01_genome_reference/Crichardii_676_v2.0.fa' 

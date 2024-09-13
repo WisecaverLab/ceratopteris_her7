@@ -1,0 +1,31 @@
+#!/bin/bash
+#SBATCH --job-name=bwa_align
+#SBATCH --account=jwisecav
+#SBATCH --mail-type=END,FAIL
+#SBATCH --nodes=1
+#SBATCH --ntasks=1
+#SBATCH --cpus-per-task=16
+#SBATCH --mem=24G
+#SBATCH --time=24:00:00     
+#SBATCH --output=slurm-out/%x.o%j
+#SBATCH --error=slurm-out/%x.e%j
+
+
+echo 'module load samtools'
+echo 'module load bcftools'
+echo 'module load bwa'
+
+module load samtools
+module load bcftools
+module load bwa
+
+echo 'bwa index -a bwtsw /depot/jwisecav/data/kburow/BSA_by_RNAseq/candidate_wideseq/ref_files/Crichardii_676_v2.0.fa'
+bwa index -a bwtsw /depot/jwisecav/data/kburow/BSA_by_RNAseq/candidate_wideseq/ref_files/Crichardii_676_v2.0.fa
+
+echo 'bwa mem /depot/jwisecav/data/kburow/BSA_by_RNAseq/candidate_wideseq/ref_files/Crichardii_676_v2.0.fa 009148_her7-BRL1_S173_R1_filtered.fastq.gz 009148_her7-BRL1_S173_R2_filtered.fastq.gz | samtools sort -o her7-BRL1-2.bam'
+bwa mem /depot/jwisecav/data/kburow/BSA_by_RNAseq/candidate_wideseq/ref_files/Crichardii_676_v2.0.fa /depot/jwisecav/data/kburow/BSA_by_RNAseq/candidate_wideseq/009148_her7-BRL1_S173_R1_filtered.fastq.gz /depot/jwisecav/data/kburow/BSA_by_RNAseq/candidate_wideseq/009148_her7-BRL1_S173_R2_filtered.fastq.gz | samtools sort -o /depot/jwisecav/data/kburow/BSA_by_RNAseq/candidate_wideseq/her7-BRL1_align.bam
+#bwa mem /depot/jwisecav/data/kburow/BSA_by_RNAseq/candidate_wideseq/BRL1_transcript.fa 009148_her7-BRL1_S173_R1_filtered.fastq.gz 009148_her7-BRL1_S173_R2_filtered.fastq.gz | samtools sort -o her7-BRL1-2.bam
+
+
+echo 'bcftools mpileup -Ou -f /depot/jwisecav/data/ceratopteris/bsa_by_rnaseq/01_genome_reference/Crichardii_676_v2.0.fa her7-BRL1-2.bam | bcftools call --ploidy 1 -mv -Ov -o her7-BRL1-2calls.vcf'
+bcftools mpileup -Ou -f /depot/jwisecav/data/ceratopteris/bsa_by_rnaseq/01_genome_reference/Crichardii_676_v2.0.fa /depot/jwisecav/data/kburow/BSA_by_RNAseq/candidate_wideseq/her7-BRL1_align.bam | bcftools call --ploidy 1 -mv -Ov -o /depot/jwisecav/data/kburow/BSA_by_RNAseq/candidate_wideseq/her7-BRL1_align_calls.vcf

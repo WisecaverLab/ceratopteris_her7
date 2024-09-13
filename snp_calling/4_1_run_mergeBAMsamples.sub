@@ -1,0 +1,30 @@
+#!/bin/bash
+#SBATCH --job-name=samtools_merge
+#SBATCH --account=jwisecav
+#SBATCH --mail-type=END,FAIL
+#SBATCH --nodes=1
+#SBATCH --ntasks=1
+#SBATCH --cpus-per-task=16
+#SBATCH --mem=32G
+#SBATCH --time=16:00:00     
+#SBATCH --output=slurm_out/%x.o%j
+#SBATCH --error=slurm_out/%x.e%j
+
+##USAGE: export INDIR=''; sbatch --mail-user=$EMAIL /depot/jwisecav/data/ceratopteris/github/ceratopteris_bsa_by_rnaseq/snp_calling/4_1_run_mergeBAMsamples.sub
+
+###INDIR should be the path to the input directory
+
+echo $INDIR
+
+echo 'cd $INDIR'
+cd $INDIR
+
+echo 'module load samtools'
+module load samtools
+
+echo 'samtools merge merged_references_only.bam N8Ref_ReadGroups.bam HnnRef_ReadGroups.bam'
+
+samtools merge merged_references_only.bam N8Ref_ReadGroups.bam HnnRef_ReadGroups.bam 
+
+echo 'samtools index merged_references_only.bam'
+samtools index merged_references_only.bam

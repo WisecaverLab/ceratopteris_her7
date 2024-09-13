@@ -1,0 +1,34 @@
+#!/bin/bash
+#SBATCH --job-name=SnpSift_RC
+#SBATCH --account=jwisecav
+#SBATCH --mail-type=END,FAIL
+#SBATCH --nodes=1
+#SBATCH --ntasks=1
+#SBATCH --cpus-per-task=1
+#SBATCH --mem=1G
+#SBATCH --time=2:00:00     
+#SBATCH --output=../../slurm_out/%x.o%j
+#SBATCH --error=../../slurm_out/%x.e%j
+
+
+##USAGE: export DIR=''; export SAMPLE=''; sbatch --mail-user=$EMAIL /depot/jwisecav/data/ceratopteris/github/ceratopteris_bsa_by_rnaseq/snp_calling/run_snpsift_filtering_int_redo.sub
+
+echo $SAMPLE
+echo $DIR
+
+#load module 
+echo 'module load biocontainers/default'
+echo 'module load snpsift'
+module load biocontainers/default
+module load snpsift
+
+#go into directory
+cd $DIR
+
+#Filter to retain only snps present on both forward and reverse strands 
+echo 'cat 0003.vcf | SnpSift filter "( (( DP4[0] = 0 ) & ( DP4[1] = 0 )) & (( DP4[2] >= 2 ) & ( DP4[3] >= 2 )) )" >  ${SAMPLE}_int_strand_filter.vcf'
+cat 0003.vcf | SnpSift filter "( (( DP4[0] = 0 ) & ( DP4[1] = 0 )) & (( DP4[2] >= 2 ) & ( DP4[3] >= 2 )) )" >  ${SAMPLE}_int_strand_filter.vcf
+
+#Filter to remove indels and for quality
+echo 'cat ${SAMPLE}_chr_int_strand_filter.vcf | SnpSift filter "((QUAL >= 30) & !(exists INDEL))" > ${SAMPLE}_chr_int_strand_qual_indel_filtered.vcf'
+cat ${SAMPLE}_int_strand_filter.vcf | SnpSift filter "((QUAL >= 30) & !(exists INDEL))" > ${SAMPLE}_int_strand_qual_indel_filtered.vcf

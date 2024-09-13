@@ -1,0 +1,60 @@
+#!/bin/bash
+#SBATCH --job-name=BWA_var_call
+#SBATCH --account=jwisecav
+#SBATCH --mail-type=END,FAIL
+#SBATCH --mem=32G
+#SBATCH --ntasks=16
+#SBATCH --time=48:00:00     
+#SBATCH --output=%x.o%j
+#SBATCH --error=%x.e%j
+
+
+###'USAGE: sbatch --mail-user=$EMAIL /depot/jwisecav/data/ceratopteris/github/her7/wideseq/bcftools_var_calls.sub'
+
+echo 'module use /depot/jwisecav/apps/modulefiles'
+echo 'module load bcftools'
+
+module use /depot/jwisecav/apps/modulefiles
+module load bcftools
+
+echo 'cd her19'
+cd her19
+
+echo 'bcftools mpileup -Ou -f ../Crichardii_676_v2.0.fa her19_bwa_aligned.bam | bcftools call -mv -Ov -o her19_bwa_calls.vcf'
+bcftools mpileup -Ou -f ../Crichardii_676_v2.0.fa her19_bwa_aligned.bam | bcftools call -mv -Ov -o her19_bwa_calls.vcf
+
+echo 'cd ../her11'
+cd ../her11
+
+echo 'bcftools mpileup -Ou -f ../Crichardii_676_v2.0.fa her11_bwa_aligned.bam | bcftools call -mv -Ov -o her11_bwa_calls.vcf'
+bcftools mpileup -Ou -f ../Crichardii_676_v2.0.fa her11_bwa_aligned.bam | bcftools call -mv -Ov -o her11_bwa_calls.vcf
+
+echo 'cd ../her15'
+cd ../her15
+
+echo 'bcftools mpileup -Ou -f ../Crichardii_676_v2.0.fa her15_bwa_aligned.bam | bcftools call -mv -Ov -o her15_bwa_calls.vcf'
+bcftools mpileup -Ou -f ../Crichardii_676_v2.0.fa her15_bwa_aligned.bam | bcftools call -mv -Ov -o her15_bwa_calls.vcf
+
+echo 'cd ../her10'
+cd ../her10
+
+echo 'bcftools mpileup -Ou -f ../Crichardii_676_v2.0.fa her10_bwa_aligned.bam | bcftools call -mv -Ov -o her10_bwa_calls.vcf'
+bcftools mpileup -Ou -f ../Crichardii_676_v2.0.fa her10_bwa_aligned.bam | bcftools call -mv -Ov -o her10_bwa_calls.vcf
+
+echo 'cd ../her14'
+cd ../her14
+
+echo 'bcftools mpileup -Ou -f ../Crichardii_676_v2.0.fa her14_bwa_aliged.bam | bcftools call -mv -Ov -o her14_bwa_calls.vcf'
+bcftools mpileup -Ou -f ../Crichardii_676_v2.0.fa her14_bwa_aliged.bam | bcftools call -mv -Ov -o her14_bwa_calls.vcf
+
+echo 'cd ../hnn'
+cd ../hnn
+
+echo 'bcftools mpileup -Ou -f ../Crichardii_676_v2.0.fa hnn_bwa_aligned.bam | bcftools call -mv -Ov -o hnn_bwa_calls.vcf'
+bcftools mpileup -Ou -f ../Crichardii_676_v2.0.fa hnn_bwa_aligned.bam | bcftools call -mv -Ov -o hnn_bwa_calls.vcf
+
+echo 'cd ../her7'
+cd ../her7
+
+echo 'bcftools mpileup -Ou -f ../Crichardii_676_v2.0.fa her7_bwa_aligned.bam | bcftools call -mv -Ov -o her7_bwa_calls.vcf'
+bcftools mpileup -Ou -f ../Crichardii_676_v2.0.fa her7_bwa_aligned.bam | bcftools call -mv -Ov -o her7_bwa_calls.vcf

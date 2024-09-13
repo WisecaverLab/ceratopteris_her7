@@ -1,0 +1,39 @@
+#!/bin/bash
+#SBATCH --job-name=GATK_MarkDuplicate
+#SBATCH --account=jwisecav
+#SBATCH --mail-type=END,FAIL
+#SBATCH --nodes=1
+#SBATCH --ntasks=1
+#SBATCH --cpus-per-task=16
+#SBATCH --mem=32G
+#SBATCH --time=24:00:00     
+#SBATCH --output=slurm_out/%x.o%j
+#SBATCH --error=slurm_out/%x.e%j
+
+
+##USAGE: export SAMPLE=''; export INDIR=''; export OUTDIR=''; sbatch --mail-user=$EMAIL /depot/jwisecav/data/ceratopteris/github/ceratopteris_bsa_by_rnaseq/snp_calling/1_run_MarkDuplicates.sub
+
+###SAMPLE should be the sample name matching the name of the transcript mapped directories
+###INDIR should be the path to the full directory containing the bam file 
+###OUTDIR should be full path to the output directory
+
+echo $SAMPLE
+echo $INDIR
+echo $OUTDIR
+
+echo 'cd $OUTDIR'
+cd $OUTDIR
+
+echo 'module load biocontainers/default'
+echo 'module load gatk4/4.2.6.1'
+
+#load modules
+module load biocontainers/default
+module load gatk4/4.2.6.1
+
+echo 'gatk MarkDuplicates -I '$INDIR/$SAMPLE/Aligned.sortedByCoord.out.bam' -O $SAMPLE_markduplicates.gvcf -M $SAMPLE_marked_dup_metrics.txt'
+
+#mark duplicates in the data 
+gatk MarkDuplicates -I '$INDIR/$SAMPLE/Aligned.sortedByCoord.out.bam' -O ${SAMPLE}_markduplicates.gvcf -M ${SAMPLE}_marked_dup_metrics.txt
+
+###'gatk MarkDuplicates -I '/scratch/bell/kburow/STAR_test/her13He_mapped/Aligned.sortedByCoord.out.bam' -O her13He_markduplicates.gvcf -M her13He_marked_dup_metrics.txt'

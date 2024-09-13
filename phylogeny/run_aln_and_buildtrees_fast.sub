@@ -1,0 +1,39 @@
+#!/bin/bash
+#SBATCH --job-name=fasttree
+#SBATCH --account=jwisecav
+#SBATCH --mail-type=END,FAIL
+#SBATCH --nodes=1
+#SBATCH --ntasks=32
+#SBATCH --time=12:00:00     
+#SBATCH --output=%x.o%j
+#SBATCH --error=%x.e%j
+
+# usage: export OG='HER7'; sbatch --mail-user=$EMAIL scripts/run_aln_and_buildtrees_fast.sub
+
+CWD=$PWD
+
+#OG='HER7'
+
+module load conda-env/env.genomics
+module load mafft
+
+date
+echo Building $OG phylogeny 
+echo 
+
+#####################################
+### STEP ONE
+### Run mafft protein Alignment
+echo mafft $OG.fa '>' $OG.aln 
+mafft $OG.fa > $OG.aln
+
+#####################################
+### STEP TWO
+### Run FASTTREE phylogenetic analysis 
+echo FastTree -spr 4 -mlacc 2 -slownni $OG.aln '>' $OG.fast.tree 
+FastTree -spr 4 -mlacc 2 -slownni $OG.aln > $OG.fast.tree
+
+echo python scripts/mpr_tree.py $OG.fast.tree 
+python scripts/mpr_tree.py $OG.fast.tree
+python scripts/visualize_tree.py $OG.fast.mpr.tree $OG.aln scripts/species_ids.txt scripts/lineage_colors.dmp 0.95 $OG.fast.mpr.pdf
+

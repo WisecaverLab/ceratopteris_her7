@@ -1,0 +1,29 @@
+#!/bin/bash
+#SBATCH --job-name=STARmapping
+#SBATCH --account=jwisecav
+#SBATCH --mail-type=END,FAIL
+#SBATCH --mem=90G
+#SBATCH --ntasks=48
+#SBATCH --time=24:00:00     
+#SBATCH --output=../slurm-out/%x.o%j
+#SBATCH --error=../slurm-out/%x.e%j
+
+##USAGE: export SAMPLE='sampleid'; export GENOMEDIR='/depot/jwisecav/data/ceratopteris/bsa_by_rnaseq/03_rnaseq_analysis/04_transcript_mapping/STAR_index'; export SAMPLEDIR='/depot/jwisecav/data/ceratopteris/bsa_by_rnaseq/03_rnaseq_analysis/02_cleanRNAseq'; sbatch --mail-user=$EMAIL /depot/jwisecav/data/ceratopteris/github/ceratopteris_bsa_by_rnaseq/rnaseq_analysis/5_run_STAR_mapping.sub
+
+echo 'SAMPLE = ' $SAMPLE
+echo 'GENOMEDIR = ' $GENOMEDIR
+echo 'SAMPLEDIR = ' $SAMPLEDIR 
+
+echo 'mkdir $SAMPLE'
+mkdir $SAMPLE 
+
+echo 'cd $SAMPLE' 
+cd $SAMPLE
+
+echo 'module use /depot/jwisecav/apps/modulefiles'
+echo 'module load star'
+module use /depot/jwisecav/apps/modulefiles
+module load star
+
+echo 'STAR --runThreadN 24 --genomeDir $GENOMEDIR --readFilesIn ${SAMPLEDIR}/${SAMPLE}_1.fq.gz ${SAMPLEDIR}/${SAMPLE}_2.fq.gz --readFilesCommand gunzip -c --outSAMtype BAM SortedByCoordinate'
+STAR --runThreadN 24 --genomeDir $GENOMEDIR --readFilesIn ${SAMPLEDIR}/${SAMPLE}_1.fq.gz ${SAMPLEDIR}/${SAMPLE}_2.fq.gz --readFilesCommand gunzip -c --outSAMtype BAM SortedByCoordinate
