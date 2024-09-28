@@ -1,0 +1,18 @@
+kegg
+Biosynthesis of other secondary metabolites
+Carbohydrate metabolism
+Cell growth and death
+Cell motility
+Cellular Processes
+Energy metabolism
+Environmental Information Processing
+Lipid metabolism
+map00195 - Photosynthesis
+map00940 - Phenylpropanoid biosynthesis
+map04016 - MAPK signaling pathway - plant
+map04075 - Plant hormone signal transduction
+map04814 - Motor proteins
+Metabolism
+Metabolism of cofactors and vitamins
+Metabolism of terpenoids and polyketides
+Signal transduction
